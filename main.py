@@ -19,7 +19,8 @@ class Attraction:
     
     def close_attraction(self):
         self._status = "Closed"
-    
+
+
 class ThrillRide(Attraction):
     def __init__(self, name, capacity, status, min_height):
         super().__init__(name, capacity, status)
@@ -38,6 +39,7 @@ class ThrillRide(Attraction):
             eligibility = False
         return eligibility
     
+    
 class FamilyRide(Attraction):
     def __init__(self, name, capacity, status, min_age):
         super().__init__(name, capacity, status)
@@ -55,6 +57,8 @@ class FamilyRide(Attraction):
         else:
             eligibility = False
         return eligibility
+
+
 class Staff:
     def __init__(self, name, role):
         self._name = name
@@ -62,6 +66,7 @@ class Staff:
     
     def work(self):
         print(f"Staff {self._name} is performing their role: {self._role}")
+
 
 class Manager(Staff):
     def __init__(self, name, role):
