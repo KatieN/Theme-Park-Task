@@ -27,15 +27,16 @@ class ThrillRide(Attraction):
     
     def start(self):
         if self._status == "Open":
-            print("Thrill Ride " +self._name+ " is now starting. Hold on tight!")
+            print(f"Thrill Ride {self._name} is now starting. Hold on tight!")
         else:
-            print(f"Thrill ride {self._name} is closed.")
+            print(f"Thrill Ride {self._name} is closed.")
     
     def is_eligible(self, height):
         if height >= self._min_height:
-            print(f"This person is eligible to ride {self._name}.")
+            eligibility = True
         else:
-            print(f"This person is too short to ride {self._name}.")
+            eligibility = False
+        return eligibility
     
 class FamilyRide(Attraction):
     def __init__(self, name, capacity, status, min_age):
@@ -50,10 +51,10 @@ class FamilyRide(Attraction):
     
     def is_eligible(self, age):
         if age >= self._min_age:
-            print(f"This person is eligible to ride {self._name}.")
+            eligibility = True
         else:
-            print(f"This person is not eligible to ride {self._name}")
-
+            eligibility = False
+        return eligibility
 class Staff:
     def __init__(self, name, role):
         self._name = name
@@ -83,13 +84,26 @@ class Visitor:
         self._ride_history = []
     
     def ride(self, attraction):
+
         if isinstance(attraction, ThrillRide) == True:
-            eligible = attraction.is_eligible(self._height)
-            self._ride_history.append(attraction)
+            if attraction._status == "Open":
+                if attraction.is_eligible(self._height) == True:
+                    print(f"{self._name} is enjoying the {attraction._name}!")
+                else:
+                    print(f"{self._name} is not eligible for {attraction._name}")
+                    self._ride_history.append(attraction)
+            else:
+                print(f"{attraction._name} is currently closed.")
+            
         elif isinstance(attraction, FamilyRide) == True:
-            eligible = attraction.is_eligible(self._age)
-            self._ride_history.append(attraction)
-        return eligible
+            if attraction._status == "Open":  
+                if attraction.is_eligible(self._age) == True:
+                    print(f"{self._name} is enjoying the {attraction._name}!")
+                    self._ride_history.append(attraction)
+                else:
+                    print(f"{self._name} is not eligible for {attraction._name}")
+            else:
+                print(f"{attraction._name} is currently closed.")
 
     def view_history(self):
         for ride in self._ride_history:
@@ -103,6 +117,7 @@ dragon = ThrillRide("Dragon Coaster", 20, "Open", 140)
 merry = FamilyRide("Merry-Go-Round", 30, "Open", 4)
 alex = Visitor("Alex", 20, 160)
 jessica = Visitor("Jessica", 2, 120)
+dog = "word"
 
 alex.ride(dragon)
 alex.ride(merry)
@@ -112,6 +127,8 @@ jessica.ride(merry)
 
 thrills = ThrillRide("Smiler", 40, "Open", 150)
 family = FamilyRide("Tea Cups", 30, "Open", 5)
+
+thrills.close_attraction()
 
 thrills.start()
 family.start()
@@ -125,3 +142,5 @@ boss.add_staff(worker)
 boss.get_team_summary()
 
 alex.view_history()
+
+worker.work()
